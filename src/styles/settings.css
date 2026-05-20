@@ -1,0 +1,392 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ClipGenius — Settings Page Styles
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Settings Layout ────────────────────────────────────────────────── */
+.settings-layout {
+  max-width: 640px;
+  margin: 0 auto;
+  animation: fadeInUp 0.4s ease;
+}
+
+/* ── Settings Section ───────────────────────────────────────────────── */
+.settings-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.settings-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.settings-section-title i {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-purple);
+}
+
+/* ── API Key Input ──────────────────────────────────────────────────── */
+.api-key-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.api-key-input input {
+  flex: 1;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.api-key-test-btn {
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.api-key-test-btn:hover {
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+}
+
+.api-key-test-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.api-key-status-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Connection Status ──────────────────────────────────────────────── */
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.connection-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.connection-status--connected .connection-status-dot {
+  background: var(--accent-green);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+
+.connection-status--connected {
+  color: var(--accent-green);
+}
+
+.connection-status--error .connection-status-dot {
+  background: var(--accent-red);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.connection-status--error {
+  color: var(--accent-red);
+}
+
+.connection-status--idle {
+  color: var(--text-muted);
+}
+
+.connection-status--idle .connection-status-dot {
+  background: var(--text-muted);
+}
+
+/* ── Region Grid ────────────────────────────────────────────────────── */
+.region-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.region-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.region-chip:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.region-chip.selected {
+  background: rgba(124, 58, 237, 0.12);
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+}
+
+.region-chip-flag {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ── Niche Grid ─────────────────────────────────────────────────────── */
+.niche-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.niche-grid-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.niche-grid-chip:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.niche-grid-chip.selected {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(236, 72, 153, 0.08));
+  border-color: var(--accent-purple);
+  color: var(--text-primary);
+}
+
+.niche-grid-chip-emoji {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ── Toggle Switch ──────────────────────────────────────────────────── */
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.settings-row + .settings-row {
+  border-top: 1px solid var(--border-color);
+}
+
+.settings-row-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.settings-row-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: all var(--transition-normal);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--accent-purple);
+  border-color: var(--accent-purple);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+  background: #fff;
+}
+
+.toggle-switch input:focus + .toggle-slider {
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+/* ── Export / Import Row ────────────────────────────────────────────── */
+.export-import-row {
+  display: flex;
+  gap: 10px;
+}
+
+.export-import-row .btn-secondary {
+  flex: 1;
+  text-align: center;
+}
+
+/* ── Settings Description ───────────────────────────────────────────── */
+.settings-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+/* ── Settings Input Group ───────────────────────────────────────────── */
+.settings-input-group {
+  margin-bottom: 16px;
+}
+
+.settings-input-group:last-child {
+  margin-bottom: 0;
+}
+
+.settings-input-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ── Danger Zone ────────────────────────────────────────────────────── */
+.danger-zone {
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.danger-zone .settings-section-title {
+  color: var(--accent-red);
+}
+
+.danger-zone .settings-section-title i {
+  color: var(--accent-red);
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--accent-red);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* ── Version Info ───────────────────────────────────────────────────── */
+.settings-version {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.settings-version a {
+  color: var(--accent-purple);
+  transition: color var(--transition-fast);
+}
+
+.settings-version a:hover {
+  color: var(--accent-pink);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .settings-layout {
+    max-width: 100%;
+  }
+
+  .settings-section {
+    padding: 18px;
+  }
+
+  .api-key-input {
+    flex-direction: column;
+  }
+
+  .api-key-input input {
+    width: 100%;
+  }
+
+  .region-grid,
+  .niche-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .export-import-row {
+    flex-direction: column;
+  }
+}

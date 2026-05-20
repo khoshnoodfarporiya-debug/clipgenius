@@ -1,0 +1,594 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ClipGenius — Generator Page Styles
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Generator Layout ───────────────────────────────────────────────── */
+.generator-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 28px;
+  min-height: calc(100vh - 128px);
+  animation: fadeInUp 0.4s ease;
+}
+
+/* ── Generator Controls (Left Panel) ────────────────────────────────── */
+.generator-controls {
+  position: sticky;
+  top: 32px;
+  height: fit-content;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.generator-control-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.generator-control-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.generator-control-title i {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
+
+/* ── Niche Selector ─────────────────────────────────────────────────── */
+.niche-selector {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.niche-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.niche-chip:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.niche-chip.selected {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(236, 72, 153, 0.1));
+  border-color: var(--accent-purple);
+  color: var(--text-primary);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.1);
+}
+
+.niche-chip-emoji {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ── Trend Picker ───────────────────────────────────────────────────── */
+.trend-picker {
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+}
+
+.trend-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.trend-picker-item:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.trend-picker-item.selected {
+  background: rgba(124, 58, 237, 0.1);
+  color: var(--accent-purple);
+}
+
+.trend-picker-item-radio {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  flex-shrink: 0;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.trend-picker-item.selected .trend-picker-item-radio {
+  border-color: var(--accent-purple);
+}
+
+.trend-picker-item.selected .trend-picker-item-radio::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-purple);
+}
+
+.trend-picker-item-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trend-picker-item-traffic {
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── Generate CTA ───────────────────────────────────────────────────── */
+.generate-cta {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  background: var(--gradient-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.generate-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.generate-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.35), var(--shadow-glow);
+}
+
+.generate-cta:hover::before {
+  opacity: 1;
+}
+
+.generate-cta:active {
+  transform: translateY(0);
+}
+
+.generate-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.generate-cta i {
+  width: 20px;
+  height: 20px;
+}
+
+.generate-cta .spinner {
+  border-color: rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+}
+
+/* ── Results Panel ──────────────────────────────────────────────────── */
+.generator-results {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Ideas Grid ─────────────────────────────────────────────────────── */
+.ideas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.idea-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all var(--transition-normal);
+  animation: fadeInUp 0.3s ease backwards;
+}
+
+.idea-card:nth-child(1) { animation-delay: 0s; }
+.idea-card:nth-child(2) { animation-delay: 0.05s; }
+.idea-card:nth-child(3) { animation-delay: 0.1s; }
+.idea-card:nth-child(4) { animation-delay: 0.15s; }
+.idea-card:nth-child(5) { animation-delay: 0.2s; }
+
+.idea-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+.idea-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.idea-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.idea-card-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.idea-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.idea-card-tag {
+  padding: 3px 10px;
+  font-size: 11px;
+  border-radius: 100px;
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.idea-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* ── Virality Badge ─────────────────────────────────────────────────── */
+.virality-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.virality-badge--high {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--accent-green);
+}
+
+.virality-badge--medium {
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--accent-orange);
+}
+
+.virality-badge--low {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--accent-red);
+}
+
+/* ── Script Editor ──────────────────────────────────────────────────── */
+.script-editor {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.script-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.script-editor-title {
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.script-editor-title i {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-purple);
+}
+
+.script-editor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.script-textarea {
+  width: 100%;
+  min-height: 300px;
+  padding: 18px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.script-textarea:focus {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+/* ── Script Sections ────────────────────────────────────────────────── */
+.script-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.script-section {
+  padding: 16px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--border-color);
+}
+
+.script-section--hook {
+  border-left-color: var(--accent-purple);
+}
+
+.script-section--body {
+  border-left-color: var(--accent-blue);
+}
+
+.script-section--cta {
+  border-left-color: var(--accent-green);
+}
+
+.script-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.script-section--hook .script-section-label {
+  color: var(--accent-purple);
+}
+
+.script-section--body .script-section-label {
+  color: var(--accent-blue);
+}
+
+.script-section--cta .script-section-label {
+  color: var(--accent-green);
+}
+
+.script-section-content {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+/* ── Typing Animation ───────────────────────────────────────────────── */
+.typing-animation {
+  display: inline;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--accent-purple);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.8s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ── Meme Remixer ───────────────────────────────────────────────────── */
+.meme-remixer {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.meme-remixer-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.meme-remixer-header i {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-orange);
+}
+
+.meme-remixer-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.meme-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.meme-input-row input {
+  flex: 1;
+}
+
+.meme-results {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.meme-result-card {
+  padding: 14px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.meme-result-card:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+/* ── Generator Empty State ──────────────────────────────────────────── */
+.generator-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  min-height: 400px;
+}
+
+.generator-empty-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(236, 72, 153, 0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.generator-empty-icon i {
+  width: 32px;
+  height: 32px;
+  color: var(--accent-purple);
+  opacity: 0.6;
+}
+
+.generator-empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.generator-empty-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .generator-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .generator-controls {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .niche-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .meme-results {
+    grid-template-columns: 1fr;
+  }
+}

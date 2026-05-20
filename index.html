@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClipGenius — AI Content Ideation Dashboard</title>
+  <meta name="description" content="ClipGenius is an AI-powered content ideation dashboard that helps creators discover trends, generate viral video ideas, write scripts, and plan their content calendar." />
+  <meta name="keywords" content="AI, content creation, video ideas, trending topics, script generator, content planner" />
+  <meta name="author" content="ClipGenius" />
+  <meta name="theme-color" content="#0a0a0f" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ClipGenius — AI Content Ideation Dashboard" />
+  <meta property="og:description" content="Discover trends, generate viral ideas, and plan your content with AI." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
+  <!-- PWA Manifest & iOS Standalone App Settings -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/assets/icon-512.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ClipGenius" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/src/styles/index.css" />
+</head>
+<body>
+  <!-- Inline Error Catcher for premium debugging and blank screen resolution -->
+  <div id="error-catcher-banner" style="display:none; position:fixed; top:0; left:0; width:100%; background:#ef4444; color:#fff; padding:16px; z-index:99999; font-family:monospace; box-shadow:0 4px 12px rgba(0,0,0,0.5); text-align:left;">
+    <h3 style="margin:0 0 8px 0; font-size:16px;">⚠️ Frontend Error Encountered</h3>
+    <p id="error-catcher-msg" style="margin:0; font-size:14px; white-space:pre-wrap;"></p>
+    <button onclick="localStorage.clear(); location.reload(true);" style="margin-top:12px; background:#fff; color:#ef4444; padding:6px 12px; border-radius:4px; font-weight:bold; cursor:pointer; border:none;">Clear Local Storage & Reload</button>
+  </div>
+  <script>
+    window.addEventListener('error', function(e) {
+      const banner = document.getElementById('error-catcher-banner');
+      const msg = document.getElementById('error-catcher-msg');
+      if (banner && msg) {
+        banner.style.display = 'block';
+        msg.textContent = e.message + '\nat ' + e.filename + ':' + e.lineno + ':' + e.colno + '\nStack: ' + (e.error ? e.error.stack : 'N/A');
+      }
+    });
+    window.addEventListener('unhandledrejection', function(e) {
+      const banner = document.getElementById('error-catcher-banner');
+      const msg = document.getElementById('error-catcher-msg');
+      if (banner && msg) {
+        banner.style.display = 'block';
+        msg.textContent = 'Unhandled promise rejection: ' + e.reason + (e.reason && e.reason.stack ? '\nStack: ' + e.reason.stack : '');
+      }
+    });
+  </script>
+
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

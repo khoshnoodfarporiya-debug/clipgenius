@@ -1,0 +1,506 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ClipGenius — Planner Page Styles
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Planner Header ─────────────────────────────────────────────────── */
+.planner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.planner-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.planner-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.planner-sort-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 8px 32px 8px 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238888a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.planner-sort-select:hover {
+  border-color: var(--border-hover);
+}
+
+.planner-sort-select option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* ── Status Filters ─────────────────────────────────────────────────── */
+.status-filters {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.status-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 100px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.status-filter-chip:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.status-filter-chip.active {
+  color: var(--text-primary);
+}
+
+.status-filter-chip.active[data-status='all'] {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+}
+
+.status-filter-chip.active[data-status='idea'] {
+  background: rgba(124, 58, 237, 0.12);
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+}
+
+.status-filter-chip.active[data-status='scripted'] {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.status-filter-chip.active[data-status='filmed'] {
+  background: rgba(249, 115, 22, 0.12);
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
+.status-filter-chip.active[data-status='posted'] {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+.status-filter-count {
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Planner List ───────────────────────────────────────────────────── */
+.planner-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeInUp 0.4s ease;
+}
+
+/* ── Planner Item ───────────────────────────────────────────────────── */
+.planner-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all var(--transition-normal);
+  cursor: grab;
+  user-select: none;
+  position: relative;
+}
+
+.planner-item:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+}
+
+.planner-item:active {
+  cursor: grabbing;
+}
+
+.planner-item.dragging {
+  opacity: 0.5;
+  border-color: var(--accent-purple);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ── Drag Handle ────────────────────────────────────────────────────── */
+.planner-item-drag {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  opacity: 0.3;
+  transition: opacity var(--transition-fast);
+  flex-shrink: 0;
+  cursor: grab;
+  padding: 4px;
+}
+
+.planner-item:hover .planner-item-drag {
+  opacity: 0.6;
+}
+
+.planner-item-drag i {
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+}
+
+/* ── Status Dot ─────────────────────────────────────────────────────── */
+.planner-item-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.planner-item-status::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: 0.2;
+}
+
+.planner-item-status--idea {
+  background: var(--accent-purple);
+  color: var(--accent-purple);
+}
+
+.planner-item-status--scripted {
+  background: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.planner-item-status--filmed {
+  background: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
+.planner-item-status--posted {
+  background: var(--accent-green);
+  color: var(--accent-green);
+}
+
+/* ── Item Content ───────────────────────────────────────────────────── */
+.planner-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.planner-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.planner-item-preview {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.planner-item-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.planner-item-date i {
+  width: 12px;
+  height: 12px;
+}
+
+/* ── Item Status Badge ──────────────────────────────────────────────── */
+.planner-item-status-badge {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 100px;
+  flex-shrink: 0;
+  text-transform: capitalize;
+}
+
+.planner-item-status-badge--idea {
+  background: rgba(124, 58, 237, 0.12);
+  color: var(--accent-purple);
+}
+
+.planner-item-status-badge--scripted {
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--accent-blue);
+}
+
+.planner-item-status-badge--filmed {
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--accent-orange);
+}
+
+.planner-item-status-badge--posted {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--accent-green);
+}
+
+/* ── Item Actions ───────────────────────────────────────────────────── */
+.planner-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.planner-item:hover .planner-item-actions {
+  opacity: 1;
+}
+
+.planner-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.planner-action-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.planner-action-btn--delete:hover {
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--accent-red);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.planner-action-btn i {
+  width: 15px;
+  height: 15px;
+}
+
+/* ── Status Dropdown ────────────────────────────────────────────────── */
+.status-dropdown {
+  position: absolute;
+  right: 20px;
+  top: calc(100% + 4px);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+  min-width: 160px;
+  padding: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: all var(--transition-fast);
+}
+
+.status-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.status-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.status-dropdown-item:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.status-dropdown-item-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dropdown-item-dot--idea {
+  background: var(--accent-purple);
+}
+
+.status-dropdown-item-dot--scripted {
+  background: var(--accent-blue);
+}
+
+.status-dropdown-item-dot--filmed {
+  background: var(--accent-orange);
+}
+
+.status-dropdown-item-dot--posted {
+  background: var(--accent-green);
+}
+
+.status-dropdown-item.current {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* ── Empty State ────────────────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 64px 20px;
+  animation: fadeInUp 0.4s ease;
+}
+
+.empty-state-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.06));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.empty-state-icon i {
+  width: 32px;
+  height: 32px;
+  color: var(--accent-purple);
+  opacity: 0.5;
+}
+
+.empty-state-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.empty-state-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 320px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+/* ── Add Item Button ────────────────────────────────────────────────── */
+.planner-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: transparent;
+  width: 100%;
+}
+
+.planner-add-btn:hover {
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+  background: rgba(124, 58, 237, 0.04);
+}
+
+.planner-add-btn i {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .planner-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .planner-item {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .planner-item-actions {
+    opacity: 1;
+  }
+
+  .planner-item-drag {
+    display: none;
+  }
+
+  .status-filters {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+}
