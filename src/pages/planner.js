@@ -43,16 +43,30 @@ export function render(container) {
   let currentFilter = 'all';
   let currentSort = 'newest';
 
+  // Helper to get fresh counts
+  function getCounts() {
+    const ideas = storage.getIdeas();
+    return {
+      all: ideas.length,
+      idea: ideas.filter(i => (i.status || 'idea') === 'idea').length,
+      scripted: ideas.filter(i => i.status === 'scripted').length,
+      filmed: ideas.filter(i => i.status === 'filmed').length,
+      posted: ideas.filter(i => i.status === 'posted').length,
+    };
+  }
+
+  const counts = getCounts();
+
   container.innerHTML = `
     <div class="planner-header">
       <h1 class="gradient-text">Content Planner</h1>
       <div class="planner-controls">
-        <div class="filter-chips" id="filter-chips">
-          <button class="chip filter-chip selected" data-filter="all">All</button>
-          <button class="chip filter-chip" data-filter="idea">💡 Idea</button>
-          <button class="chip filter-chip" data-filter="scripted">✍️ Scripted</button>
-          <button class="chip filter-chip" data-filter="filmed">🎬 Filmed</button>
-          <button class="chip filter-chip" data-filter="posted">✅ Posted</button>
+        <div class="status-filters" id="filter-chips">
+          <button class="status-filter-chip active" data-filter="all" data-status="all">All <span class="status-filter-count">${counts.all}</span></button>
+          <button class="status-filter-chip" data-filter="idea" data-status="idea">💡 Idea <span class="status-filter-count">${counts.idea}</span></button>
+          <button class="status-filter-chip" data-filter="scripted" data-status="scripted">✍️ Scripted <span class="status-filter-count">${counts.scripted}</span></button>
+          <button class="status-filter-chip" data-filter="filmed" data-status="filmed">🎬 Filmed <span class="status-filter-count">${counts.filmed}</span></button>
+          <button class="status-filter-chip" data-filter="posted" data-status="posted">✅ Posted <span class="status-filter-count">${counts.posted}</span></button>
         </div>
         <div class="sort-wrapper">
           ${filterIcon}
@@ -74,15 +88,30 @@ export function render(container) {
     </div>
   `;
 
-  // --- Filter chips ---
-  document.querySelectorAll('.filter-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('selected'));
-      chip.classList.add('selected');
-      currentFilter = chip.dataset.filter;
-      renderIdeas();
+  // --- Filter chips click handlers ---
+  function bindFilterChips() {
+    document.querySelectorAll('.status-filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.status-filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentFilter = chip.dataset.filter;
+        renderIdeas();
+      });
     });
-  });
+  }
+  bindFilterChips();
+
+  // --- Dynamic count update helper ---
+  function updateFilterCounts() {
+    const currentCounts = getCounts();
+    document.querySelectorAll('.status-filter-chip').forEach(chip => {
+      const filter = chip.dataset.filter;
+      const countEl = chip.querySelector('.status-filter-count');
+      if (countEl) {
+        countEl.textContent = currentCounts[filter] || 0;
+      }
+    });
+  }
 
   // --- Sort select ---
   document.getElementById('sort-select').addEventListener('change', (e) => {
@@ -93,6 +122,9 @@ export function render(container) {
   function renderIdeas() {
     const listEl = document.getElementById('planner-list');
     let ideas = storage.getIdeas();
+
+    // Update the dynamic visual filter badges
+    updateFilterCounts();
 
     // Filter
     if (currentFilter !== 'all') {
@@ -110,10 +142,11 @@ export function render(container) {
 
     if (!ideas.length) {
       listEl.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">${lightbulbIcon}</div>
-          <p>No ideas saved yet. Generate some ideas and save your favorites!</p>
-          <a href="#generator" class="btn-primary" style="display:inline-block;margin-top:12px;">Go to Generator</a>
+        <div class="empty-state animate-fadeInUp">
+          <div class="empty-state-icon">${lightbulbIcon}</div>
+          <h4 class="empty-state-title">No Ideas Found</h4>
+          <p class="empty-state-desc">Generate some viral content and save them to build out your high-performance schedule!</p>
+          <a href="#generator" class="btn-primary" style="display:inline-flex;margin-top:12px;text-decoration:none;">Go to Generator</a>
         </div>
       `;
       return;
@@ -125,33 +158,32 @@ export function render(container) {
       const virality = idea.estimatedVirality ? `${idea.estimatedVirality}/10` : '–';
       return `
         <div class="planner-item glass-card fadeInUp" data-id="${idea.id}" style="animation-delay:${i * 0.04}s">
-          <div class="planner-item-main">
-            <span class="status-dot" style="background:${cfg.color};" title="${cfg.label}"></span>
-            <div class="planner-item-content">
-              <h3 class="planner-item-title">${escapeHtml(idea.title)}</h3>
-              <p class="planner-item-hook">${escapeHtml((idea.hook || '').slice(0, 120))}${(idea.hook || '').length > 120 ? '…' : ''}</p>
-              <div class="planner-item-meta">
-                <span class="badge">${getIconSvg('zap', { width: 12, height: 12 })} ${virality}</span>
-                <span class="planner-item-date">${clockIcon} ${timeAgo(idea.createdAt)}</span>
-              </div>
-            </div>
-            <div class="planner-item-actions">
-              <button class="btn-icon action-edit" data-id="${idea.id}" title="Edit">${editIcon}</button>
-              <div class="status-dropdown-wrapper">
-                <select class="status-dropdown" data-id="${idea.id}">
-                  ${Object.entries(STATUS_CONFIG).map(([key, val]) =>
-                    `<option value="${key}" ${key === status ? 'selected' : ''}>${val.label}</option>`
-                  ).join('')}
-                </select>
-              </div>
-              <button class="btn-icon action-delete" data-id="${idea.id}" title="Delete">${trashIcon}</button>
+          <span class="planner-item-status planner-item-status--${status}" title="${cfg.label}"></span>
+          <div class="planner-item-content">
+            <h3 class="planner-item-title">${escapeHtml(idea.title)}</h3>
+            <p class="planner-item-preview">${escapeHtml((idea.hook || '').slice(0, 120))}${(idea.hook || '').length > 120 ? '…' : ''}</p>
+            <div class="planner-item-meta">
+              <span class="planner-item-status-badge planner-item-status-badge--${status}">${cfg.label}</span>
+              <span class="badge badge--pink">${getIconSvg('zap', { width: 12, height: 12 })} ${virality}</span>
+              <span class="planner-item-date">${clockIcon} ${timeAgo(idea.createdAt)}</span>
             </div>
           </div>
-          <div class="planner-item-expanded" id="expanded-${idea.id}" style="display:none;">
-            <div class="expanded-details">
-              <p><strong>Hook:</strong> ${escapeHtml(idea.hook || '')}</p>
-              <p><strong>Concept:</strong> ${escapeHtml(idea.concept || '')}</p>
-              ${idea.hashtags ? `<p><strong>Hashtags:</strong> ${escapeHtml(Array.isArray(idea.hashtags) ? idea.hashtags.join(' ') : idea.hashtags)}</p>` : ''}
+          <div class="planner-item-actions">
+            <button class="planner-action-btn action-edit" data-id="${idea.id}" title="View Details">${editIcon}</button>
+            <div class="status-dropdown-wrapper">
+              <select class="status-dropdown" data-id="${idea.id}">
+                ${Object.entries(STATUS_CONFIG).map(([key, val]) =>
+                  `<option value="${key}" ${key === status ? 'selected' : ''}>${val.label}</option>`
+                ).join('')}
+              </select>
+            </div>
+            <button class="planner-action-btn planner-action-btn--delete action-delete" data-id="${idea.id}" title="Delete">${trashIcon}</button>
+          </div>
+          <div class="planner-item-expanded" id="expanded-${idea.id}" style="display:none; width: 100%; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+            <div class="expanded-details" style="display:flex; flex-direction:column; gap:8px;">
+              <p style="font-size:13px;line-height:1.5;margin:0;"><strong style="color:var(--text-primary);">Hook:</strong> ${escapeHtml(idea.hook || '')}</p>
+              <p style="font-size:13px;line-height:1.5;margin:0;"><strong style="color:var(--text-primary);">Concept:</strong> ${escapeHtml(idea.concept || '')}</p>
+              ${idea.hashtags ? `<p style="font-size:13px;line-height:1.5;margin:0;"><strong style="color:var(--text-primary);">Hashtags:</strong> <span style="color:var(--accent-pink);">${escapeHtml(Array.isArray(idea.hashtags) ? idea.hashtags.join(' ') : idea.hashtags)}</span></p>` : ''}
             </div>
           </div>
         </div>

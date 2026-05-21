@@ -30,6 +30,12 @@ const NICHES = [
   { id: 'travel', emoji: '✈️', label: 'Travel' },
   { id: 'art', emoji: '🎨', label: 'Art' },
   { id: 'horror', emoji: '😱', label: 'Horror' },
+  { id: 'ai-automation', emoji: '🤖', label: 'AI Automation' },
+  { id: 'asmr', emoji: '🎧', label: 'ASMR' },
+  { id: 'side-hustles', emoji: '💸', label: 'Side Hustles' },
+  { id: 'storytelling', emoji: '📖', label: 'Storytelling' },
+  { id: 'lifehacks', emoji: '💡', label: 'Life Hacks' },
+  { id: 'selfcare', emoji: '🌸', label: 'Self Care' },
 ];
 
 export function render(container) {
@@ -89,7 +95,7 @@ export function render(container) {
         <div class="region-grid" id="region-grid">
           ${REGIONS.map(r => `
             <button class="chip region-chip ${r.code === currentRegion ? 'selected' : ''}" data-region="${r.code}">
-              ${r.flag} ${r.label}
+              <span class="region-chip-flag">${r.flag}</span> ${r.label}
             </button>
           `).join('')}
         </div>
@@ -100,8 +106,8 @@ export function render(container) {
         <h2 class="settings-section-title">🎯 Your Niches</h2>
         <div class="niche-grid" id="niche-grid">
           ${NICHES.map(n => `
-            <button class="chip niche-chip ${currentNiches.has(n.id) ? 'selected' : ''}" data-niche="${n.id}">
-              ${n.emoji} ${n.label}
+            <button class="chip niche-grid-chip ${currentNiches.has(n.id) ? 'selected' : ''}" data-niche="${n.id}">
+              <span class="niche-grid-chip-emoji">${n.emoji}</span> ${n.label}
             </button>
           `).join('')}
         </div>
@@ -258,7 +264,7 @@ export function render(container) {
 
   // --- Niche selection ---
   const selectedNiches = new Set(currentNiches);
-  document.querySelectorAll('#niche-grid .niche-chip').forEach(chip => {
+  document.querySelectorAll('#niche-grid .niche-grid-chip').forEach(chip => {
     chip.addEventListener('click', () => {
       const niche = chip.dataset.niche;
       if (selectedNiches.has(niche)) {

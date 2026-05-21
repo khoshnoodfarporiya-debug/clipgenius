@@ -65,9 +65,9 @@ async function callAI(apiKey, messages, endpoint = '/api/ai/generate') {
 }
 
 /**
- * Generate 5 viral short-form video ideas for a niche.
+ * Generate viral short-form video ideas for a niche.
  */
-export async function generateIdeas(niche, trendingTopics, apiKey) {
+export async function generateIdeas(niche, trendingTopics, apiKey, count = 5) {
   if (!apiKey) throw new Error('Groq API key is required. Add it in Settings.');
 
   const topicsStr = Array.isArray(trendingTopics)
@@ -78,11 +78,11 @@ export async function generateIdeas(niche, trendingTopics, apiKey) {
     {
       role: 'system',
       content:
-        'You are a viral short-form video content strategist. Generate exactly 5 unique video ideas. Respond ONLY with a JSON array.',
+        `You are a viral short-form video content strategist. Generate exactly ${count} unique video ideas. Respond ONLY with a JSON array.`,
     },
     {
       role: 'user',
-      content: `Niche: ${niche}. Current trending topics: ${topicsStr}. Generate 5 viral short-form video ideas. Each idea must have: title (catchy, under 60 chars), hook (first 3 seconds, compelling opening line), concept (2-3 sentence description), estimatedVirality (1-10 score), hashtags (array of 5 relevant tags). Return ONLY valid JSON array, no markdown.`,
+      content: `Niche: ${niche}. Current trending topics: ${topicsStr}. Generate exactly ${count} viral short-form video ideas. Each idea must have: title (catchy, under 60 chars), hook (first 3 seconds, compelling opening line), concept (2-3 sentence description), estimatedVirality (1-10 score), hashtags (array of 5 relevant tags). Return ONLY valid JSON array, no markdown.`,
     },
   ];
 
@@ -127,6 +127,50 @@ export async function remixMeme(meme, niche, apiKey) {
     {
       role: 'user',
       content: `Trending meme/format: ${meme}. My niche: ${niche}. Create 3 unique twists on this meme for my niche. Each twist should have: twist (name of the twist), concept (2-3 sentences), script (30 second script). Return ONLY valid JSON array. No markdown.`,
+    },
+  ];
+
+  const raw = await callAI(apiKey, messages);
+  return parseAIResponse(raw);
+}
+
+/**
+ * Generate exactly 3 scroll-stopping hook variants for a concept.
+ */
+export async function generateHooks(concept, niche, vibe, apiKey) {
+  if (!apiKey) throw new Error('Groq API key is required. Add it in Settings.');
+
+  const messages = [
+    {
+      role: 'system',
+      content:
+        'You are a viral hook architect. You design highly compelling, attention-grabbing opening lines (hooks) for short-form videos. Respond ONLY with a JSON array.',
+    },
+    {
+      role: 'user',
+      content: `Concept: ${concept}. Niche: ${niche}. Vibe direction: ${vibe}. Generate exactly 3 unique scroll-stopping hook variations. Each hook must have: type (e.g., 'The Contradiction', 'The Curiosity Gap', 'The Direct Callout'), hookText (the exact opening line under 15 words), explanation (short, compelling sentence under 15 words explaining why this hook stops the scroll). Return ONLY valid JSON array, no markdown.`,
+    },
+  ];
+
+  const raw = await callAI(apiKey, messages);
+  return parseAIResponse(raw);
+}
+
+/**
+ * Generate 5 high-CTR titles and 10 hashtags for a concept.
+ */
+export async function optimizeSEO(concept, niche, apiKey) {
+  if (!apiKey) throw new Error('Groq API key is required. Add it in Settings.');
+
+  const messages = [
+    {
+      role: 'system',
+      content:
+        'You are an SEO and virality optimizer for short-form videos (Shorts, TikTok, Reels). Respond ONLY with a JSON object containing keys "titles" and "tags".',
+    },
+    {
+      role: 'user',
+      content: `Concept: ${concept}. Niche: ${niche}. Generate exactly 5 highly clickable, high-CTR titles (each under 50 characters) and exactly 10 trending, copy-friendly hashtags (no '#' prefix in the JSON strings). Return ONLY valid JSON with keys: titles (array of 5 strings), tags (array of 10 strings). No markdown.`,
     },
   ];
 

@@ -27,57 +27,82 @@ function formatDuration(seconds) {
  */
 export function createVideoCard(video, onGenerateIdea) {
   const card = document.createElement('div');
-  card.className = 'video-card';
+  card.className = 'video-card animate-fadeInUp';
 
   // ── Thumbnail Section ─────────────────────────────────────
-  const thumbWrap = document.createElement('div');
-  thumbWrap.className = 'video-card-thumb';
+  const thumbWrapper = document.createElement('div');
+  thumbWrapper.className = 'video-thumbnail-wrapper';
 
   const img = document.createElement('img');
+  img.className = 'video-thumbnail';
   img.src = video.thumbnail;
   img.alt = video.title;
   img.loading = 'lazy';
 
+  const overlay = document.createElement('div');
+  overlay.className = 'video-overlay';
+
+  const overlayTop = document.createElement('div');
+  overlayTop.className = 'video-overlay-top';
+
   const durationBadge = document.createElement('span');
-  durationBadge.className = 'video-card-duration';
+  durationBadge.className = 'video-duration';
   durationBadge.textContent = formatDuration(video.duration);
 
-  const gradientOverlay = document.createElement('div');
-  gradientOverlay.className = 'video-card-gradient';
+  const platformBadge = document.createElement('span');
+  platformBadge.className = 'video-platform-badge video-platform-badge--youtube';
+  platformBadge.textContent = 'Shorts';
 
-  thumbWrap.appendChild(img);
-  thumbWrap.appendChild(durationBadge);
-  thumbWrap.appendChild(gradientOverlay);
+  overlayTop.appendChild(durationBadge);
+  overlayTop.appendChild(platformBadge);
 
-  thumbWrap.addEventListener('click', () => {
+  const playBtn = document.createElement('div');
+  playBtn.className = 'video-play-btn';
+  playBtn.innerHTML = getIconSvg('play', { class: 'play-icon' });
+
+  thumbWrapper.appendChild(img);
+  thumbWrapper.appendChild(overlay);
+  thumbWrapper.appendChild(overlayTop);
+  thumbWrapper.appendChild(playBtn);
+
+  thumbWrapper.addEventListener('click', () => {
     window.open(`https://youtube.com/shorts/${video.id}`, '_blank');
   });
-  thumbWrap.style.cursor = 'pointer';
+  thumbWrapper.style.cursor = 'pointer';
 
-  card.appendChild(thumbWrap);
+  card.appendChild(thumbWrapper);
 
   // ── Info Section ──────────────────────────────────────────
   const info = document.createElement('div');
-  info.className = 'video-card-info';
+  info.className = 'video-info';
 
   const title = document.createElement('h3');
-  title.className = 'video-card-title';
+  title.className = 'video-title';
   title.textContent = video.title;
 
-  const channel = document.createElement('p');
-  channel.className = 'video-card-channel';
-  channel.textContent = video.channelTitle;
+  const channel = document.createElement('div');
+  channel.className = 'video-channel';
+
+  const channelAvatar = document.createElement('div');
+  channelAvatar.className = 'video-channel-avatar';
+  channelAvatar.innerHTML = `<span style="font-size:10px;display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);">👤</span>`;
+
+  const channelName = document.createElement('span');
+  channelName.textContent = video.channelTitle;
+
+  channel.appendChild(channelAvatar);
+  channel.appendChild(channelName);
 
   // Stats row
   const stats = document.createElement('div');
-  stats.className = 'video-card-stats';
+  stats.className = 'video-stats';
 
   const views = document.createElement('span');
-  views.className = 'video-card-stat';
+  views.className = 'video-stat';
   views.innerHTML = createStatIcon('eye') + ' ' + formatCount(video.viewCount);
 
   const likes = document.createElement('span');
-  likes.className = 'video-card-stat';
+  likes.className = 'video-stat';
   likes.innerHTML = createStatIcon('heart') + ' ' + formatCount(video.likeCount);
 
   stats.appendChild(views);
@@ -90,12 +115,15 @@ export function createVideoCard(video, onGenerateIdea) {
 
   // ── Actions Row ───────────────────────────────────────────
   const actions = document.createElement('div');
-  actions.className = 'video-card-actions';
+  actions.className = 'video-actions';
 
   const generateBtn = document.createElement('button');
-  generateBtn.className = 'btn btn-primary btn-sm';
-  generateBtn.textContent = '✨ Generate Idea';
-  generateBtn.addEventListener('click', () => onGenerateIdea(video));
+  generateBtn.className = 'generate-btn';
+  generateBtn.innerHTML = `✨ Generate Idea`;
+  generateBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    onGenerateIdea(video);
+  });
 
   actions.appendChild(generateBtn);
   card.appendChild(actions);
@@ -109,3 +137,4 @@ export function createVideoCard(video, onGenerateIdea) {
 function createStatIcon(name) {
   return getIconSvg(name, { width: 14, height: 14, class: 'stat-icon' });
 }
+

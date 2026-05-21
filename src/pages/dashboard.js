@@ -19,6 +19,11 @@ function skeletonLine(width = '100%', height = '14px') {
 }
 
 export function render(container) {
+  const settings = storage.getSettings();
+  const ytKey = storage.getApiKey('youtube');
+  const groqKey = storage.getApiKey('groq');
+  const keysMissing = !ytKey || !groqKey;
+
   const flameIcon = getIconSvg('flame', { width: 20, height: 20 });
   const trendIcon = getIconSvg('trending-up', { width: 20, height: 20 });
   const zapIcon = getIconSvg('zap', { width: 20, height: 20 });
@@ -36,6 +41,50 @@ export function render(container) {
   const thisWeek = ideas.filter(i => new Date(i.createdAt || i.savedAt || 0).getTime() > oneWeekAgo).length;
 
   container.innerHTML = `
+    ${keysMissing ? `
+    <div class="welcome-onboarding-card">
+      <h2>✨ Get Started with ClipGenius</h2>
+      <p class="welcome-onboarding-card-desc">
+        ClipGenius is fueled by high-performance social APIs and ultra-fast LLMs. Set up your free API keys below to unlock content brainstorming, script generation, and real-time trending dashboard metrics.
+      </p>
+      <div class="welcome-steps-container">
+        <!-- Step 1: Groq Key -->
+        <div class="welcome-step-card ${groqKey ? 'connected' : ''}">
+          <div class="welcome-step-header">
+            <div class="welcome-step-title-wrap">
+              <span class="welcome-step-title">🧠 Groq Cloud AI <span style="font-size:12px;color:var(--text-muted);font-weight:normal;">(For Ideas & Scripts)</span></span>
+              <p class="welcome-step-desc">Brainstorms viral concepts and writes engaging 30-60 second short-form video scripts instantly.</p>
+            </div>
+            <span class="welcome-step-badge ${groqKey ? 'connected' : 'pending'}">
+              ${groqKey ? `${getIconSvg('check', { width: 12, height: 12 })} Connected` : '⏳ Pending'}
+            </span>
+          </div>
+          <a href="https://console.groq.com/keys" target="_blank" rel="noopener" class="welcome-step-link">
+            Get free Groq key ↗
+          </a>
+        </div>
+
+        <!-- Step 2: YouTube Key -->
+        <div class="welcome-step-card ${ytKey ? 'connected' : ''}">
+          <div class="welcome-step-header">
+            <div class="welcome-step-title-wrap">
+              <span class="welcome-step-title">📺 YouTube Data API <span style="font-size:12px;color:var(--text-muted);font-weight:normal;">(For Trending Shorts)</span></span>
+              <p class="welcome-step-desc">Scrapes and indexes the most popular daily YouTube Shorts in your target region to spark concepts.</p>
+            </div>
+            <span class="welcome-step-badge ${ytKey ? 'connected' : 'pending'}">
+              ${ytKey ? `${getIconSvg('check', { width: 12, height: 12 })} Connected` : '⏳ Pending'}
+            </span>
+          </div>
+          <a href="https://console.cloud.google.com/" target="_blank" rel="noopener" class="welcome-step-link">
+            Get free YouTube key ↗
+          </a>
+        </div>
+      </div>
+      <a href="#settings" class="onboarding-cta-btn btn-primary">
+        ${getIconSvg('settings', { width: 16, height: 16 })} Connect API Keys in Settings
+      </a>
+    </div>
+    ` : ''}
     <div class="dashboard-grid">
       <!-- Hot Right Now -->
       <div class="widget-card hot-right-now" style="animation-delay:0s">
@@ -106,9 +155,6 @@ export function render(container) {
   `;
 
   // --- Data loading ---
-  const settings = storage.getSettings();
-  const ytKey = storage.getApiKey('youtube');
-  const groqKey = storage.getApiKey('groq');
   let trendingTopics = [];
 
   // Load Hot Right Now
