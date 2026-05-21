@@ -19,20 +19,33 @@ export function createSidebar(onNavigate, activePage) {
   sidebar.className = 'sidebar';
 
   // ── Logo / Brand ──────────────────────────────────────────
-  const brand = document.createElement('div');
-  brand.className = 'sidebar-brand';
+  const header = document.createElement('div');
+  header.className = 'sidebar-header';
 
-  const logo = document.createElement('h1');
+  const logo = document.createElement('div');
   logo.className = 'sidebar-logo';
-  logo.textContent = 'ClipGenius';
 
-  const tagline = document.createElement('span');
+  const logoIcon = document.createElement('span');
+  logoIcon.className = 'sidebar-logo-icon';
+  logoIcon.textContent = '⚡';
+
+  const logoText = document.createElement('span');
+  logoText.className = 'sidebar-logo-text';
+  logoText.textContent = 'ClipGenius';
+
+  logo.appendChild(logoIcon);
+  logo.appendChild(logoText);
+  header.appendChild(logo);
+
+  const tagline = document.createElement('div');
   tagline.className = 'sidebar-tagline';
+  tagline.style.fontSize = '12px';
+  tagline.style.color = 'var(--text-secondary)';
+  tagline.style.marginTop = '4px';
   tagline.textContent = 'AI Content Engine';
+  header.appendChild(tagline);
 
-  brand.appendChild(logo);
-  brand.appendChild(tagline);
-  sidebar.appendChild(brand);
+  sidebar.appendChild(header);
 
   // ── Navigation List ───────────────────────────────────────
   const nav = document.createElement('nav');

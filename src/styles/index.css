@@ -172,7 +172,7 @@ select {
 }
 
 .sidebar-nav-item.active {
-  background-color: rgba(124, 58, 237, 0.12);
+  background-color: rgba(223, 186, 115, 0.12);
   color: var(--text-primary);
 }
 
@@ -662,6 +662,12 @@ textarea {
 .empty-state-global p {
   font-size: 15px;
   margin-bottom: 16px;
+}
+
+/* ── Mobile Layout Defaults (Desktop Hiding) ───────────────────────── */
+.mobile-tab-bar,
+.mobile-header {
+  display: none;
 }
 
 /* ── Responsive & Vibe Mobile Navigation ────────────────────────────── */
