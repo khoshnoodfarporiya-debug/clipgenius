@@ -79,10 +79,10 @@
 }
 
 .niche-chip.selected {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(236, 72, 153, 0.1));
+  background: linear-gradient(135deg, rgba(223, 186, 115, 0.15), rgba(163, 130, 68, 0.1));
   border-color: var(--accent-purple);
   color: var(--text-primary);
-  box-shadow: 0 0 12px rgba(124, 58, 237, 0.1);
+  box-shadow: 0 0 12px rgba(223, 186, 115, 0.1);
 }
 
 .niche-chip-emoji {
@@ -544,7 +544,7 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(236, 72, 153, 0.08));
+  background: linear-gradient(135deg, rgba(223, 186, 115, 0.12), rgba(163, 130, 68, 0.08));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -761,9 +761,9 @@
 
 .vibe-btn.active {
   color: #fff;
-  background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(124, 58, 237, 0.15));
+  background: linear-gradient(135deg, rgba(223, 186, 115, 0.15), rgba(163, 130, 68, 0.15));
   border-color: var(--accent-pink);
-  box-shadow: 0 0 10px rgba(236, 72, 153, 0.1);
+  box-shadow: 0 0 10px rgba(223, 186, 115, 0.1);
 }
 
 /* ── Hooks Architect Results ───────────────────────────────────────── */

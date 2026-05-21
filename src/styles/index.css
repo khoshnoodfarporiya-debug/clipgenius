@@ -4,31 +4,31 @@
 
 /* ── Design Tokens ──────────────────────────────────────────────────── */
 :root {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-tertiary: #1a1a28;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --bg-card-hover: rgba(255, 255, 255, 0.07);
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.15);
-  --text-primary: #f0f0f5;
-  --text-secondary: #8888a0;
-  --text-muted: #55556a;
-  --accent-purple: #7c3aed;
-  --accent-pink: #ec4899;
-  --accent-orange: #f97316;
-  --accent-green: #22c55e;
-  --accent-red: #ef4444;
-  --accent-blue: #3b82f6;
-  --gradient-accent: linear-gradient(135deg, #7c3aed, #ec4899, #f97316);
+  --bg-primary: #08080a;
+  --bg-secondary: #111115;
+  --bg-tertiary: #191920;
+  --bg-card: rgba(212, 175, 55, 0.03);
+  --bg-card-hover: rgba(212, 175, 55, 0.07);
+  --border-color: rgba(212, 175, 55, 0.09);
+  --border-hover: rgba(212, 175, 55, 0.18);
+  --text-primary: #f5f4f0;
+  --text-secondary: #a39e93;
+  --text-muted: #6e6a5f;
+  --accent-purple: #c5a880;
+  --accent-pink: #dfba73;
+  --accent-orange: #f2cb78;
+  --accent-green: #48bb78;
+  --accent-red: #f56565;
+  --accent-blue: #c5a880;
+  --gradient-accent: linear-gradient(135deg, #a38244, #dfba73, #eed39c);
   --font-body: 'Inter', sans-serif;
   --font-heading: 'Space Grotesk', sans-serif;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.15);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 20px rgba(223, 186, 115, 0.14);
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
   --transition-slow: 400ms ease;
@@ -266,7 +266,7 @@ select {
 
 /* ── Selection ──────────────────────────────────────────────────────── */
 ::selection {
-  background: rgba(124, 58, 237, 0.35);
+  background: rgba(223, 186, 115, 0.35);
   color: #fff;
 }
 
@@ -339,10 +339,10 @@ select {
 @keyframes glow {
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
+    box-shadow: 0 0 20px rgba(223, 186, 115, 0.15);
   }
   50% {
-    box-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 0 30px rgba(223, 186, 115, 0.35);
   }
 }
 
@@ -384,7 +384,7 @@ select {
 }
 
 .btn-primary:hover {
-  box-shadow: var(--shadow-glow), 0 4px 16px rgba(124, 58, 237, 0.3);
+  box-shadow: var(--shadow-glow), 0 4px 16px rgba(223, 186, 115, 0.2);
   transform: translateY(-1px);
 }
 
@@ -465,7 +465,7 @@ input:focus,
 textarea:focus,
 select:focus {
   border-color: var(--accent-purple);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  box-shadow: 0 0 0 3px rgba(223, 186, 115, 0.15);
 }
 
 input::placeholder,
@@ -488,7 +488,7 @@ textarea {
   font-size: 11px;
   font-weight: 600;
   border-radius: 100px;
-  background: rgba(124, 58, 237, 0.15);
+  background: rgba(197, 168, 128, 0.15);
   color: var(--accent-purple);
   letter-spacing: 0.02em;
 }
@@ -555,7 +555,7 @@ textarea {
 }
 
 .chip.active {
-  background: rgba(124, 58, 237, 0.15);
+  background: rgba(223, 186, 115, 0.15);
   border-color: var(--accent-purple);
   color: var(--accent-purple);
 }
@@ -711,7 +711,7 @@ textarea {
     justify-content: center;
     color: #fff;
     font-weight: bold;
-    box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 0 10px rgba(223, 186, 115, 0.4);
   }
 
   .mobile-header-logo-text {
@@ -839,7 +839,7 @@ textarea {
     transform: translate(-50%, -50%) scale(0);
     width: 36px;
     height: 36px;
-    background: radial-gradient(circle, rgba(124, 58, 237, 0.35) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(223, 186, 115, 0.35) 0%, transparent 70%);
     border-radius: 50%;
     opacity: 0;
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity var(--transition-fast);
@@ -854,7 +854,7 @@ textarea {
   .mobile-tab-item.active .mobile-tab-svg {
     color: var(--accent-purple);
     transform: scale(1.1);
-    filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.6));
+    filter: drop-shadow(0 0 8px rgba(223, 186, 115, 0.6));
   }
 
   .mobile-tab-item.active .mobile-tab-glow {
