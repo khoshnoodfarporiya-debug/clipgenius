@@ -160,6 +160,47 @@ if (document.readyState === 'loading') {
   bootstrap();
 }
 
+// ── SSO: Global postMessage listener for child iframe agents ──
+window.addEventListener('message', (event) => {
+  if (!event.data || typeof event.data !== 'object') return;
+
+  switch (event.data.type) {
+    case 'AGENT_AUTH_REQUEST':
+      // Child agent is requesting auth context
+      const requestingIframe = document.querySelector(
+        `iframe[title*="${event.data.agent}"]`
+      );
+      if (requestingIframe && requestingIframe.contentWindow) {
+        const authContext = {
+          type: 'CLIPGENIUS_SSO',
+          payload: {
+            user: JSON.parse(localStorage.getItem('clipgenius_user') || 'null'),
+            settings: JSON.parse(localStorage.getItem('clipgenius_settings') || '{}'),
+            apiKeys: {
+              groq: localStorage.getItem('clipgenius_groq_key') || '',
+              youtube: localStorage.getItem('clipgenius_youtube_key') || '',
+            },
+            parentOrigin: window.location.origin,
+            timestamp: Date.now(),
+          },
+        };
+        requestingIframe.contentWindow.postMessage(authContext, '*');
+      }
+      break;
+
+    case 'AGENT_HEARTBEAT':
+      console.log(`[SSO] ${event.data.agent} heartbeat: ${event.data.status}`);
+      break;
+
+    case 'AGENT_NAVIGATE':
+      // Child agent requests parent navigation
+      if (event.data.hash) {
+        window.location.hash = event.data.hash;
+      }
+      break;
+  }
+});
+
 // Register PWA Service Worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

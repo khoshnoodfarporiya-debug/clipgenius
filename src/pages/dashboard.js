@@ -151,6 +151,33 @@ export function render(container) {
           </div>
         </div>
       </div>
+
+      <!-- Product Intelligence Hub -->
+      <div class="widget-card product-intelligence-card" style="animation-delay:0.32s">
+        <div class="widget-header">
+          <span class="widget-title">${getIconSvg('brain', { width: 20, height: 20 })} Product Intelligence</span>
+          <button class="btn-icon" id="refresh-product-intel">${refreshIcon}</button>
+        </div>
+        <div class="product-intel-grid" id="product-intel-grid">
+          <div class="product-intel-stat">
+            <span class="product-intel-value" id="pi-total-products">—</span>
+            <span class="product-intel-label">Products Sourced</span>
+          </div>
+          <div class="product-intel-stat">
+            <span class="product-intel-value" id="pi-platforms">—</span>
+            <span class="product-intel-label">Active Platforms</span>
+          </div>
+          <div class="product-intel-stat">
+            <span class="product-intel-value" id="pi-profitability">—</span>
+            <span class="product-intel-label">Avg Profit Score</span>
+          </div>
+          <div class="product-intel-stat">
+            <span class="product-intel-value" id="pi-sweeps">—</span>
+            <span class="product-intel-label">Total Sweeps</span>
+          </div>
+        </div>
+        <div class="product-intel-platforms" id="pi-top-platforms"></div>
+      </div>
     </div>
   `;
 
@@ -250,7 +277,54 @@ export function render(container) {
   // Refresh button
   document.getElementById('refresh-hot').addEventListener('click', loadHotNow);
 
+  // ── Product Intelligence Hub ──
+  async function loadProductIntel() {
+    try {
+      const resp = await fetch('http://localhost:3001/api/products/stats');
+      const data = await resp.json();
+
+      const el = (id) => document.getElementById(id);
+
+      // Animate value updates
+      const animateValue = (element, target) => {
+        if (element) {
+          element.style.opacity = '0';
+          element.style.transform = 'translateY(4px)';
+          setTimeout(() => {
+            element.textContent = target;
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+          }, 150);
+        }
+      };
+
+      animateValue(el('pi-total-products'), formatNumber(data.totalProducts || 0));
+      animateValue(el('pi-platforms'), String(data.totalPlatforms || 0));
+      animateValue(el('pi-profitability'), data.avgProfitability ? data.avgProfitability.toFixed(1) : '0');
+      animateValue(el('pi-sweeps'), String(data.totalSweeps || 0));
+
+      // Render top platforms as mini badges
+      const platformsEl = el('pi-top-platforms');
+      if (platformsEl && data.topPlatforms && data.topPlatforms.length > 0) {
+        platformsEl.innerHTML = data.topPlatforms
+          .map(p => `<span class="pi-platform-badge">${p.platform} <strong>${p.count}</strong></span>`)
+          .join('');
+      } else if (platformsEl) {
+        platformsEl.innerHTML = '<span class="pi-no-data">No product data yet — run a sweep to populate</span>';
+      }
+    } catch (err) {
+      // Silently fail if proxy is not running
+      const piGrid = document.getElementById('pi-top-platforms');
+      if (piGrid) {
+        piGrid.innerHTML = '<span class="pi-no-data">Product Agent offline — start the proxy server</span>';
+      }
+    }
+  }
+
+  document.getElementById('refresh-product-intel').addEventListener('click', loadProductIntel);
+
   // Kick off data loading
   loadHotNow();
   loadTrends();
+  loadProductIntel();
 }

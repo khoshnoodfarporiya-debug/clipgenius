@@ -134,6 +134,26 @@ export function render(container) {
   if (iframe && placeholder) {
     iframe.addEventListener('load', () => {
       placeholder.style.display = 'none';
+
+      // ── SSO: Broadcast auth context to child iframe via postMessage ──
+      try {
+        const authContext = {
+          type: 'CLIPGENIUS_SSO',
+          payload: {
+            user: JSON.parse(localStorage.getItem('clipgenius_user') || 'null'),
+            settings: JSON.parse(localStorage.getItem('clipgenius_settings') || '{}'),
+            apiKeys: {
+              groq: localStorage.getItem('clipgenius_groq_key') || '',
+              youtube: localStorage.getItem('clipgenius_youtube_key') || '',
+            },
+            parentOrigin: window.location.origin,
+            timestamp: Date.now(),
+          },
+        };
+        iframe.contentWindow.postMessage(authContext, '*');
+      } catch (e) {
+        console.warn('[SSO] Failed to broadcast auth context to ApexResolve:', e.message);
+      }
     });
     
     // Safety timeout to close placeholder if loading takes long
@@ -141,4 +161,11 @@ export function render(container) {
       placeholder.style.display = 'none';
     }, 2500);
   }
+
+  // ── SSO: Listen for heartbeat/status messages from child iframe ──
+  window.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'AGENT_HEARTBEAT' && event.data.agent === 'apexresolve') {
+      console.log('[SSO] ApexResolve heartbeat:', event.data.status);
+    }
+  });
 }
