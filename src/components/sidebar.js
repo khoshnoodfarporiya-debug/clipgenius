@@ -5,6 +5,9 @@ const NAV_ITEMS = [
   { id: 'trending', icon: 'trending-up', label: 'Trending' },
   { id: 'generator', icon: 'sparkles', label: 'Idea Generator' },
   { id: 'planner', icon: 'calendar', label: 'Content Planner' },
+  { id: 'apexresolve', icon: 'zap', label: 'DeepPulse Helper' },
+  { id: 'growthflow', icon: 'trending-up', label: 'Marketing Agent' },
+  { id: 'digitalproduct', icon: 'brain', label: 'Product Agent' },
   { id: 'settings', icon: 'settings', label: 'Settings' },
 ];
 

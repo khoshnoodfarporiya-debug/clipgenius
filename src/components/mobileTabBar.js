@@ -4,7 +4,7 @@ const TAB_ITEMS = [
   { id: 'dashboard', icon: 'layout-dashboard', label: 'Dashboard' },
   { id: 'trending', icon: 'trending-up', label: 'Trending' },
   { id: 'generator', icon: 'sparkles', label: 'Generator' },
-  { id: 'planner', icon: 'calendar', label: 'Planner' },
+  { id: 'apexresolve', icon: 'zap', label: 'DP Helper' },
   { id: 'settings', icon: 'settings', label: 'Settings' },
 ];
 

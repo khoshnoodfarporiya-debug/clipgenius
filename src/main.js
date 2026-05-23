@@ -7,12 +7,18 @@ import { render as renderTrending } from './pages/trending.js';
 import { render as renderGenerator } from './pages/generator.js';
 import { render as renderPlanner } from './pages/planner.js';
 import { render as renderSettings } from './pages/settings.js';
+import { render as renderApexResolve } from './pages/apexresolve.js';
+import { render as renderGrowthFlow } from './pages/growthflow.js';
+import { render as renderDigitalProduct } from './pages/digitalproduct.js';
 
 const PAGE_RENDERERS = {
   dashboard: renderDashboard,
   trending: renderTrending,
   generator: renderGenerator,
   planner: renderPlanner,
+  apexresolve: renderApexResolve,
+  growthflow: renderGrowthFlow,
+  digitalproduct: renderDigitalProduct,
   settings: renderSettings,
 };
 
