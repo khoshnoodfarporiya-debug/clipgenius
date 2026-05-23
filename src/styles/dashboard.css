@@ -723,3 +723,197 @@
     font-size: 22px;
   }
 }
+
+/* ── High-Margin Sourced Winners List Styling ── */
+.pi-sourced-products-container {
+  margin-top: 24px;
+  border-top: 1px dashed rgba(16, 185, 129, 0.15);
+  padding-top: 18px;
+}
+
+.pi-products-header {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.pi-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pi-product-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.pi-product-row:hover {
+  background: rgba(16, 185, 129, 0.03);
+  border-color: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.02);
+}
+
+.pi-product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pi-product-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.pi-product-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.pi-launch-btn {
+  padding: 6px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #10b981, #047857);
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+  transition: all var(--transition-fast);
+  color: #030712;
+}
+
+.pi-launch-btn:hover:not(:disabled) {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.35);
+}
+
+.pi-launch-btn:disabled {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* ── Live Telemetry Activity Terminal Styling ── */
+.live-terminal-card {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(236, 72, 153, 0.04) 100%);
+  border-color: rgba(139, 92, 246, 0.15);
+}
+
+.live-terminal-card::before {
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent) !important;
+}
+
+.live-terminal-card:hover {
+  border-color: rgba(139, 92, 246, 0.3);
+  box-shadow: var(--shadow-card), 0 0 40px rgba(139, 92, 246, 0.08);
+}
+
+.terminal-status-pulse {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  padding: 4px 10px;
+  border-radius: 20px;
+  animation: pulse-telemetry 2s infinite;
+}
+
+@keyframes pulse-telemetry {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 4px rgba(34, 197, 94, 0.2); }
+  50% { opacity: 1; box-shadow: 0 0 10px rgba(34, 197, 94, 0.4); }
+}
+
+.terminal-container {
+  background: #040508;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  box-shadow: inset 0 4px 16px rgba(0, 0, 0, 0.8);
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.terminal-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.terminal-body-feed {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 6px;
+}
+
+.terminal-log-row {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #c9d1d9;
+  animation: logRowFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  word-break: break-all;
+}
+
+@keyframes logRowFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.log-badge {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin-right: 6px;
+  letter-spacing: 0.02em;
+}
+
+.log-badge.info {
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.log-badge.success {
+  background: rgba(34, 197, 94, 0.1);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.log-badge.diag {
+  background: rgba(139, 92, 246, 0.1);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.log-badge.sweep {
+  background: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}

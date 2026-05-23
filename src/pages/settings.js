@@ -53,6 +53,7 @@ export function render(container) {
   const groqKey = storage.getApiKey('groq') || '';
   const ideasCount = storage.getIdeas().length;
   const scriptsCount = storage.getScripts().length;
+  const activeTheme = localStorage.getItem('clipgenius_theme') || 'gold';
 
   container.innerHTML = `
     <div class="settings-layout">
@@ -86,6 +87,26 @@ export function render(container) {
             <button class="btn-secondary test-btn" id="test-groq-btn">${zapIcon} Test</button>
           </div>
           <div class="connection-status" id="groq-status"></div>
+        </div>
+      </div>
+
+      <!-- Accent Theme Selection -->
+      <div class="settings-section glass-card">
+        <h2 class="settings-section-title">🎨 Accent Theme</h2>
+        <p class="api-key-info" style="margin-bottom: 12px; font-size: 12px;">Customize the highlight color profile of your entire workspace including all agent nodes.</p>
+        <div class="theme-grid" id="theme-grid">
+          <button class="chip theme-chip ${activeTheme === 'gold' ? 'selected' : ''}" data-theme="gold">
+            <span class="theme-chip-dot" style="background: #eed39c; box-shadow: 0 0 8px #eed39c;"></span> Golden Luxury
+          </button>
+          <button class="chip theme-chip ${activeTheme === 'emerald' ? 'selected' : ''}" data-theme="emerald">
+            <span class="theme-chip-dot" style="background: #10b981; box-shadow: 0 0 8px #10b981;"></span> Emerald Aurora
+          </button>
+          <button class="chip theme-chip ${activeTheme === 'purple' ? 'selected' : ''}" data-theme="purple">
+            <span class="theme-chip-dot" style="background: #8b5cf6; box-shadow: 0 0 8px #8b5cf6;"></span> Cyberpunk Violet
+          </button>
+          <button class="chip theme-chip ${activeTheme === 'blue' ? 'selected' : ''}" data-theme="blue">
+            <span class="theme-chip-dot" style="background: #00e5ff; box-shadow: 0 0 8px #00e5ff;"></span> Electric Ocean
+          </button>
         </div>
       </div>
 
@@ -259,6 +280,20 @@ export function render(container) {
       chip.classList.add('selected');
       storage.updateSettings({ region: chip.dataset.region });
       showToast(`Region set to ${chip.dataset.region}`, 'success');
+    });
+  });
+
+  // --- Theme Selection ---
+  document.querySelectorAll('.theme-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.theme-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      const selectedTheme = chip.dataset.theme;
+      localStorage.setItem('clipgenius_theme', selectedTheme);
+      
+      // Dispatch global theme change event
+      window.dispatchEvent(new CustomEvent('clipgenius_theme_changed', { detail: selectedTheme }));
+      showToast(`Theme morphed to ${chip.textContent.trim()}!`, 'success');
     });
   });
 

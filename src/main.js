@@ -1,6 +1,6 @@
 import { createSidebar } from './components/sidebar.js';
 import { createMobileTabBar, updateMobileTabBarActive } from './components/mobileTabBar.js';
-import { initToastContainer } from './components/toast.js';
+import { initToastContainer, showToast } from './components/toast.js';
 import { initIosInstallPrompt } from './components/iosPrompt.js';
 import { render as renderDashboard } from './pages/dashboard.js';
 import { render as renderTrending } from './pages/trending.js';
@@ -10,6 +10,70 @@ import { render as renderSettings } from './pages/settings.js';
 import { render as renderApexResolve } from './pages/apexresolve.js';
 import { render as renderGrowthFlow } from './pages/growthflow.js';
 import { render as renderDigitalProduct } from './pages/digitalproduct.js';
+import { initCommandPalette } from './components/commandPalette.js';
+import './styles/commandPalette.css';
+
+// ── Theme Mapping System ──
+const THEME_MAP = {
+  gold: {
+    '--accent-purple': '#c5a880',
+    '--accent-pink': '#dfba73',
+    '--accent-orange': '#f2cb78',
+    '--gradient-accent': 'linear-gradient(135deg, #a38244, #dfba73, #eed39c)',
+    '--shadow-glow': '0 0 20px rgba(223, 186, 115, 0.14)',
+  },
+  emerald: {
+    '--accent-purple': '#10b981',
+    '--accent-pink': '#34d399',
+    '--accent-orange': '#6ee7b7',
+    '--gradient-accent': 'linear-gradient(135deg, #047857, #10b981, #6ee7b7)',
+    '--shadow-glow': '0 0 20px rgba(16, 185, 129, 0.14)',
+  },
+  purple: {
+    '--accent-purple': '#8b5cf6',
+    '--accent-pink': '#a78bfa',
+    '--accent-orange': '#c4b5fd',
+    '--gradient-accent': 'linear-gradient(135deg, #6d28d9, #8b5cf6, #c4b5fd)',
+    '--shadow-glow': '0 0 20px rgba(139, 92, 246, 0.14)',
+  },
+  blue: {
+    '--accent-purple': '#00e5ff',
+    '--accent-pink': '#38bdf8',
+    '--accent-orange': '#7dd3fc',
+    '--gradient-accent': 'linear-gradient(135deg, #0369a1, #00e5ff, #7dd3fc)',
+    '--shadow-glow': '0 0 20px rgba(0, 229, 255, 0.14)',
+  }
+};
+
+function applyTheme(themeName) {
+  const vars = THEME_MAP[themeName] || THEME_MAP.gold;
+  Object.keys(vars).forEach((key) => {
+    document.documentElement.style.setProperty(key, vars[key]);
+  });
+}
+
+// Bootstrap active theme
+applyTheme(localStorage.getItem('clipgenius_theme') || 'gold');
+
+// Listen for global theme changes from settings page
+window.addEventListener('clipgenius_theme_changed', (e) => {
+  const newTheme = e.detail;
+  applyTheme(newTheme);
+  
+  // Broadcast to all active iframes
+  document.querySelectorAll('iframe').forEach(iframe => {
+    try {
+      if (iframe.contentWindow) {
+        iframe.contentWindow.postMessage({
+          type: 'CLIPGENIUS_THEME_CHANGE',
+          theme: newTheme
+        }, '*');
+      }
+    } catch (err) {
+      console.warn('[Theme Broadcast] Failed to notify child iframe:', err);
+    }
+  });
+});
 
 const PAGE_RENDERERS = {
   dashboard: renderDashboard,
@@ -152,6 +216,9 @@ function bootstrap() {
 
   // Initialize the iOS install prompt if applicable
   initIosInstallPrompt();
+
+  // Initialize the global Cmd+K Command Palette
+  initCommandPalette(navigateTo);
 }
 
 if (document.readyState === 'loading') {
@@ -160,12 +227,12 @@ if (document.readyState === 'loading') {
   bootstrap();
 }
 
-// ── SSO: Global postMessage listener for child iframe agents ──
+// ── SSO & Dynamic Sourcing Sync: Global postMessage listener for child iframe agents ──
 window.addEventListener('message', (event) => {
   if (!event.data || typeof event.data !== 'object') return;
 
   switch (event.data.type) {
-    case 'AGENT_AUTH_REQUEST':
+    case 'AGENT_AUTH_REQUEST': {
       // Child agent is requesting auth context
       const requestingIframe = document.querySelector(
         `iframe[title*="${event.data.agent}"]`
@@ -180,6 +247,8 @@ window.addEventListener('message', (event) => {
               groq: localStorage.getItem('clipgenius_groq_key') || '',
               youtube: localStorage.getItem('clipgenius_youtube_key') || '',
             },
+            theme: localStorage.getItem('clipgenius_theme') || 'gold',
+            launchedProducts: JSON.parse(localStorage.getItem('clipgenius_launched_products') || '[]'),
             parentOrigin: window.location.origin,
             timestamp: Date.now(),
           },
@@ -187,6 +256,7 @@ window.addEventListener('message', (event) => {
         requestingIframe.contentWindow.postMessage(authContext, '*');
       }
       break;
+    }
 
     case 'AGENT_HEARTBEAT':
       console.log(`[SSO] ${event.data.agent} heartbeat: ${event.data.status}`);
@@ -198,6 +268,44 @@ window.addEventListener('message', (event) => {
         window.location.hash = event.data.hash;
       }
       break;
+
+    case 'AGENT_PRODUCT_LAUNCHED': {
+      // Sourcing Agent (or dashboard) launched a winning product!
+      const product = event.data.product;
+      if (!product || !product.title) return;
+
+      console.log('[Product Launch] Received sync request for:', product.title);
+
+      // Save product to ClipGenius LocalStorage
+      const currentList = JSON.parse(localStorage.getItem('clipgenius_launched_products') || '[]');
+      
+      // Prevent duplicates
+      if (!currentList.some(p => p.title === product.title)) {
+        currentList.push(product);
+        localStorage.setItem('clipgenius_launched_products', JSON.stringify(currentList));
+      }
+
+      // Propagate launch to other running child agents immediately
+      document.querySelectorAll('iframe').forEach(iframe => {
+        try {
+          if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage({
+              type: 'AGENT_PRODUCT_LAUNCHED',
+              product: product
+            }, '*');
+          }
+        } catch (err) {
+          console.warn('[Product Launch] Broadcast to iframe failed:', err);
+        }
+      });
+
+      // Dispatch internal event in parent window (for activity feed/telemetry)
+      window.dispatchEvent(new CustomEvent('clipgenius_product_launched', { detail: product }));
+
+      // Show beautiful toast notification
+      showToast(`⚡ ${product.title} synced to GrowthFlow & ApexResolve!`, 'success');
+      break;
+    }
   }
 });
 
